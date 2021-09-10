@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>Victor Sun | Recipes</title>
+{% endblock %}
+
+{% block nav_content %}
+<li class="nav-item active">
+	<a class="nav-link" href="/recipes">Recipes</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/music">Music</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/books-and-movies">Books & Movies</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/pf">Personal Finance</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/education">Education</a>
+</li>
+<li class="nav-item dropdown">
+	<a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		PF Extras
+	</a>
+	<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size:13px;">
+		<a class="dropdown-item" href="/pf/api">API</a>
+		<a class="dropdown-item" href="/pf/api-doc">API Docs</a>
+		<a class="dropdown-item" href="/pf/eating-habit">ML Food Predictor</a>
+	</div>
+</li>
+{% endblock %}
+
+
+{% block page_content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style_recipe.css' %}">
+
+<div id="content">
+	<center><h1>Recipes</h1>
+	<p>My cooking philosophy is cooking without a recipe. My favourite foods to cook are quick home-style foods that require very little dishes to clean.
+		<br> This is a list of 'recipes' with no instructions or quantitative amount of ingredients.</p></center>
+	<hr>
+	<div class="row">
+		<div class="col text-center">
+			<h5>{{ rec.name }}</h5>
+			<img src="/media/{{rec.img }}" alt="{{ rec.name }}" width="250px">
+		</div>
+		<div class="col">
+			<br>
+			<h5>{{ rec.cuisine }} {{ rec.course }} dish: </h5>
+			<p>{{ rec.description }}</p>
+			<h5>Ingredients:</h5>
+			<p>{% for ingredient in rec.ingredients.all %}
+				<li>{{ ingredient.ingredient_name}}</li>
+			{% endfor %}</p>
+		</div>
+	</div>
+	<hr>
+	<center>
+		<p>{{ rec.date_modified }}</p>
+		<a class="btn btn-primary btn-sm" href="/recipes" role="button">Go back</a>
+	</center>
+</div>
+
+<!--<script>$('#content').hide().fadeIn(1000*1.5);</script>-->
+<script type="text/javascript" src="{% static 'buttons.js' %}"></script>
+
+{% endblock %}

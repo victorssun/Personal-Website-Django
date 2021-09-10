@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+
+{% block head_content %}
+<title>Victor Sun | Hello</title>
+{% endblock %}
+
+{% block nav_content %}
+<li class="nav-item">
+	<a class="nav-link" href="/recipes">Recipes</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/music">Music</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/books-and-movies">Books & Movies</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/pf">Personal Finance</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/education">Education</a>
+</li>
+<li class="nav-item dropdown">
+	<a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		PF Extras
+	</a>
+	<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size:13px;">
+		<a class="dropdown-item" href="/pf/api">API</a>
+		<a class="dropdown-item" href="/pf/api-doc">API Docs</a>
+		<a class="dropdown-item" href="pf/eating-habit">ML Food Predictor</a>
+	</div>
+</li>
+{% endblock %}
+
+{% block page_content %}
+{% load static %}
+
+<div class="row">
+	<div class="col-6 offset-3">
+		<div id="title" class="text-center">
+			<img id="logo" src="{% static 'imgs/logo_black.png' %}">
+			<h1>Victor Sun</h1>
+			<h6>I am a data enthusiast. I like looking at graphs.</h6>
+			<h6><a href="mailto:contact@victorssun.com" title="mailto:contact@victorssun.com">Contact</a> |
+			<a href="https://www.linkedin.com/in/victorssun/" target="_blank" title="https://www.linkedin.com/in/victorssun">LinkedIn</a> |
+			<a href="https://www.github.com/victorssun" target="_blank" title="https://www.github.com/victorssun">GitHub</a></h6>
+			<hr>
+			<p>Self-taught programmer. B.Sc. Chemistry & Economics. <br>
+			M.Sc. Chemistry. Aspiring human. Always enjoy learning.</p>
+			<p><a href="./recipes" title="loading in Heroku..." style="color:black">Cooker of foods.</a>
+				<a href="./music" title="loading in Heroku..." style="color:black">Listener of music.</a> <br>
+				<a href="./books-and-movies" title="loading in Heroku..." style="color:black">Reader of books. Watcher of movies.</a>
+				<a href="./pf" title="loading in Heroku..." style="color:black">Person of finance.</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+<script>$('#title').hide().fadeIn(1000*2.5);</script>
+
+{% endblock %}

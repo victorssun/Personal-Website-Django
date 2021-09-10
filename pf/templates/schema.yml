@@ -1,0 +1,1326 @@
+openapi: 3.0.3
+info:
+  title: Personal Finance API
+  version: 1.0.0
+  description: API to handle personal finance data including expenses and income information
+paths:
+  /api/income/:
+    get:
+      operationId: api_income_list
+      description: Retrieve list of monthly income streams. Can filter/search/order
+        response.
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIncomeList'
+          description: ''
+    post:
+      operationId: api_income_create
+      description: Create new instance of monthly income streams
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Income'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Income'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Income'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Income'
+          description: ''
+  /api/income/{rowId}/:
+    get:
+      operationId: api_income_retrieve
+      description: Retrieve details of a monthly income stream
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Income'
+          description: ''
+    put:
+      operationId: api_income_update
+      description: Update details of a monthly income stream
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Income'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Income'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Income'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Income'
+          description: ''
+    patch:
+      operationId: api_income_partial_update
+      description: Partially update details of a monthly income stream
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedIncome'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedIncome'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedIncome'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Income'
+          description: ''
+    delete:
+      operationId: api_income_destroy
+      description: Remove an instance of monthly streams
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/positions/:
+    get:
+      operationId: api_positions_list
+      description: Retrieve list of investment positions. Can filter/search/order
+        response.
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: max_amount
+        schema:
+          type: number
+          format: float
+      - in: query
+        name: min_amount
+        schema:
+          type: number
+          format: float
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: symbol
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPositionsList'
+          description: ''
+    post:
+      operationId: api_positions_create
+      description: Create new instance of a position
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Positions'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Positions'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Positions'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Positions'
+          description: ''
+  /api/positions/{rowId}/:
+    get:
+      operationId: api_positions_retrieve
+      description: Retrieve details of a position
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this positions.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Positions'
+          description: ''
+    put:
+      operationId: api_positions_update
+      description: Update details of a position
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this positions.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Positions'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Positions'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Positions'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Positions'
+          description: ''
+    patch:
+      operationId: api_positions_partial_update
+      description: Partially update details of a position
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this positions.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPositions'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPositions'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPositions'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Positions'
+          description: ''
+    delete:
+      operationId: api_positions_destroy
+      description: Remove an instance of a position
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this positions.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/trades/:
+    get:
+      operationId: api_trades_list
+      description: Retrieve list of investment trades. Can filter/search/order response.
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: max_amount
+        schema:
+          type: number
+          format: float
+      - in: query
+        name: min_amount
+        schema:
+          type: number
+          format: float
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: symbol
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTradesList'
+          description: ''
+    post:
+      operationId: api_trades_create
+      description: Create new instance of a trade
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trades'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Trades'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Trades'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trades'
+          description: ''
+  /api/trades/{rowId}/:
+    get:
+      operationId: api_trades_retrieve
+      description: Retrieve details of a trade
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this trades.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trades'
+          description: ''
+    put:
+      operationId: api_trades_update
+      description: Update details of a trade
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this trades.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trades'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Trades'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Trades'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trades'
+          description: ''
+    patch:
+      operationId: api_trades_partial_update
+      description: Partially update details of a trade
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this trades.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTrades'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTrades'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTrades'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trades'
+          description: ''
+    delete:
+      operationId: api_trades_destroy
+      description: Remove an instance of a trade
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this trades.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/transactions/:
+    get:
+      operationId: api_transactions_list
+      description: Retrieve list of transactions (expenses). Can filter/search/order
+        response.
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: location
+        schema:
+          type: string
+      - in: query
+        name: max_amount
+        schema:
+          type: number
+          format: float
+      - in: query
+        name: min_amount
+        schema:
+          type: number
+          format: float
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTransactionsList'
+          description: ''
+    post:
+      operationId: api_transactions_create
+      description: Create new instance of a transaction
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transactions'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Transactions'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Transactions'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+          description: ''
+  /api/transactions/{rowId}/:
+    get:
+      operationId: api_transactions_retrieve
+      description: Retrieve details of a transaction
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transactions.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+          description: ''
+    put:
+      operationId: api_transactions_update
+      description: Update details of a transaction
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transactions.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transactions'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Transactions'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Transactions'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+          description: ''
+    patch:
+      operationId: api_transactions_partial_update
+      description: Partially update details of a transaction
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transactions.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTransactions'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTransactions'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTransactions'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+          description: ''
+    delete:
+      operationId: api_transactions_destroy
+      description: Remove an instance of a transaction
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transactions.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/transfers/:
+    get:
+      operationId: api_transfers_list
+      description: Retrieve list of account transfers (deposits and withrawals). Can
+        filter/search/order response.
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: max_amount
+        schema:
+          type: number
+          format: float
+      - in: query
+        name: min_amount
+        schema:
+          type: number
+          format: float
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTransfersList'
+          description: ''
+    post:
+      operationId: api_transfers_create
+      description: Create new instance of a transfer
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transfers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Transfers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Transfers'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transfers'
+          description: ''
+  /api/transfers/{rowId}/:
+    get:
+      operationId: api_transfers_retrieve
+      description: Retrieve details of a transfer
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transfers.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transfers'
+          description: ''
+    put:
+      operationId: api_transfers_update
+      description: Update details of a transfer
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transfers.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transfers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Transfers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Transfers'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transfers'
+          description: ''
+    patch:
+      operationId: api_transfers_partial_update
+      description: Partially update details of a transfer
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transfers.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTransfers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTransfers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTransfers'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transfers'
+          description: ''
+    delete:
+      operationId: api_transfers_destroy
+      description: Remove an instance of a transfer
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this transfers.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Income:
+      type: object
+      properties:
+        rowId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        date:
+          type: string
+          format: date
+        income:
+          type: number
+          format: float
+          nullable: true
+        cashback:
+          type: number
+          format: float
+          nullable: true
+        interest:
+          type: number
+          format: float
+          nullable: true
+        investment:
+          type: number
+          format: float
+          nullable: true
+      required:
+      - date
+      - rowId
+    PaginatedIncomeList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Income'
+    PaginatedPositionsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Positions'
+    PaginatedTradesList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trades'
+    PaginatedTransactionsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transactions'
+    PaginatedTransfersList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transfers'
+    PatchedIncome:
+      type: object
+      properties:
+        rowId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        date:
+          type: string
+          format: date
+        income:
+          type: number
+          format: float
+          nullable: true
+        cashback:
+          type: number
+          format: float
+          nullable: true
+        interest:
+          type: number
+          format: float
+          nullable: true
+        investment:
+          type: number
+          format: float
+          nullable: true
+    PatchedPositions:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        symbol:
+          type: string
+        amount:
+          type: number
+          format: float
+    PatchedTrades:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        symbol:
+          type: string
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        amount:
+          type: number
+          format: float
+    PatchedTransactions:
+      type: object
+      properties:
+        rowId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        date:
+          type: string
+          format: date
+        description:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        category:
+          type: string
+        amount:
+          type: number
+          format: float
+    PatchedTransfers:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: float
+          nullable: true
+    Positions:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        symbol:
+          type: string
+        amount:
+          type: number
+          format: float
+      required:
+      - amount
+      - date
+      - symbol
+    Trades:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        symbol:
+          type: string
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        amount:
+          type: number
+          format: float
+      required:
+      - amount
+      - date
+      - quantity
+      - symbol
+    Transactions:
+      type: object
+      properties:
+        rowId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        date:
+          type: string
+          format: date
+        description:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        category:
+          type: string
+        amount:
+          type: number
+          format: float
+      required:
+      - amount
+      - category
+      - date
+      - rowId
+    Transfers:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: float
+          nullable: true
+      required:
+      - date
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Session

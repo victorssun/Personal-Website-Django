@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>Victor Sun | Music</title>
+{% endblock %}
+
+{% block nav_content %}
+<li class="nav-item">
+	<a class="nav-link" href="/recipes">Recipes</a>
+</li>
+<li class="nav-item active">
+	<a class="nav-link" href="/music">Music</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/books-and-movies">Books & Movies</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/pf">Personal Finance</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="/education">Education</a>
+</li>
+<li class="nav-item dropdown">
+	<a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		PF Extras
+	</a>
+	<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size:13px;">
+		<a class="dropdown-item" href="/pf/api">API</a>
+		<a class="dropdown-item" href="/pf/api-doc">API Docs</a>
+		<a class="dropdown-item" href="/pf/eating-habit">ML Food Predictor</a>
+	</div>
+</li>
+{% endblock %}
+
+
+{% block page_content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style_music.css' %}">
+
+<div id="content">
+	<center><h1>Music</h1>
+	<p>A dashboard visualization of music I listen to. <br>
+		'genre' is my personal categorization of songs. 'genre detailed' is a slightly more accurate categorization of the songs.<hr></p></center>
+		{% load plotly_dash %}
+		{% plotly_app name="music_dash" ratio=1.1 %}
+</div>
+
+<script>$('#content').hide().fadeIn(1000*1.5);</script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+{% endblock %}
