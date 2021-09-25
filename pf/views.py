@@ -10,6 +10,12 @@ def pf_index(request):
     return render(request, 'pf_index.html', context)
 
 
+def pf_visualization(request):
+    context = {
+    }
+    return render(request, 'pf_visualization.html', context)
+
+
 class Doc(TemplateView):
     template_name = 'api_doc.html'
 

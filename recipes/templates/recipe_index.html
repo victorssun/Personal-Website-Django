@@ -1,41 +1,12 @@
 {% extends "base.html" %}
 
-{% block head_content %}
-<title>Victor Sun | Recipes</title>
-{% endblock %}
-
-{% block nav_content %}
-<li class="nav-item active">
-	<a class="nav-link" href="/recipes">Recipes</a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="/music">Music</a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="/books-and-movies">Books & Movies</a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="/pf">Personal Finance</a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="/education">Education</a>
-</li>
-<li class="nav-item dropdown">
-	<a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		PF Extras
-	</a>
-	<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size:13px;">
-		<a class="dropdown-item" href="/pf/api">API</a>
-		<a class="dropdown-item" href="/pf/api-doc">API Docs</a>
-		<a class="dropdown-item" href="/pf/eating-habit">ML Food Predictor</a>
-	</div>
-</li>
-{% endblock %}
-
-
 {% block page_content %}
 {% load static %}
+<!--TODO: make dynamic modal-->
+{% load recipes_extras %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'style_recipe.css' %}">
+<title>Victor Sun | Recipes</title>
 
 <div id="content">
 	<center><h1>Recipes</h1>
@@ -69,6 +40,7 @@
 				</div>
 				<div class="card-footer">
 					<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal{{ recipe.pk }}">Read More</button>
+<!--					<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" onclick="showModal({{ recipe.pk }})">Read More</button>-->
 				</div>
 			</div>
 		</div>
@@ -107,7 +79,30 @@
 			</div>
 		</div>
 		{% endfor %}
-	</div>
+
+<!--		&lt;!&ndash; Modal &ndash;&gt;-->
+<!--		<div id="modal" class="modal fade" role="dialog">-->
+<!--			<div class="modal-dialog modal-dialog-centered modal-lg">-->
+
+<!--			&lt;!&ndash; Modal content&ndash;&gt;-->
+<!--			<div class="modal-content">-->
+<!--				<div class="modal-header">-->
+<!--					<h3><div id="recipe-name"></div></h3>-->
+<!--					<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--				</div>-->
+<!--				<div class="modal-body">-->
+<!--					<div class="row">-->
+<!--						<div class="col v-center" id="recipe-img"></div>-->
+<!--						<div class="col box-shift" id="recipe-info"></div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="modal-footer" id="recipe-footer"></div>-->
+<!--			</div>-->
+
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
 </div>
 
 <script>$('#content').hide().fadeIn(1000*1.5);</script>

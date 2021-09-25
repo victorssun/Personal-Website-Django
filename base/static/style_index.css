@@ -80,3 +80,7 @@ a {
 .back {
 	transform: rotateY(180deg);
 }
+
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
