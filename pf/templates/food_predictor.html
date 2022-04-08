@@ -5,29 +5,31 @@
 <link rel="stylesheet" type="text/css" href="{% static 'style_pf.css' %}">
 <title>Victor Sun | Eating Habit Prediction</title>
 
-<div class="col-8 offset-2" align="left">
-	<div id="content">
-		<h3>What will I eat today?</h3>
-		<p>
-			{% if today.todays_result.lower == 'eating out' %}
-			{{ today.todays_date }}: I will be <u>eating fast food</u> today. <br><br>
-			{% else %}
-			{{ today.todays_date }}: I will be <u>{{ today.todays_result.lower }}</u> today. <br><br>
-			{% endif %}
+<div class="row">
+	<div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-10 offset-1">
+		<div id="title">
+			<h3>What will I eat today?</h3>
+			<p>
+				{% if today.todays_result.lower == 'eating out' %}
+				{{ today.todays_date }}: I will be <u>eating fast food</u> today. <br><br>
+				{% else %}
+				{{ today.todays_date }}: I will be <u>{{ today.todays_result.lower }}</u> today. <br><br>
+				{% endif %}
 
-			<b>Past week</b><br>
-			{% for date, result in past_week.items %}
-			{% if result.lower == 'eating out' %}
-			{{ date }}: <u>eating fast food</u>. <br>
-			{% else %}
-			{{ date }}: <u>{{ result.lower }}</u>. <br>
-			{% endif %}
-			{% endfor %}
+				<b>Past week</b><br>
+				{% for date, result in past_week.items %}
+				{% if result.lower == 'eating out' %}
+				{{ date }}: <u>fast food</u>. <br>
+				{% else %}
+				{{ date }}: <u>{{ result.lower }}</u>. <br>
+				{% endif %}
+				{% endfor %}
 
-			<br>
-			<i>Options are cooking, eating fast food, eating at restaurants (I cook more than this btw)</i>.<br>
-			<i>A decision tree supervised ML model was trained using 2014-2020 personal expenses, as shown in <a href="/pf">Personal Finance</a></i>.
-		</p>
+				<br>
+				<i>Options are cooking, eating fast food, eating at restaurants (I cook more than this btw)</i>.<br>
+				<i>A decision tree supervised ML model was trained using 2014-2020 personal expenses, as shown in <a href="/pf">Personal Finance</a></i>.
+			</p>
+		</div>
 	</div>
 </div>
 

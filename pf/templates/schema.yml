@@ -4,9 +4,194 @@ info:
   version: 1.0.0
   description: API to handle personal finance data including expenses and income information
 paths:
-  /api/income/:
+  /pf/api/expenses/:
     get:
-      operationId: api_income_list
+      operationId: pf_api_expenses_list
+      description: Retrieve list of monthly expenses. Can filter/search/order response.
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - pf
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExpensesList'
+          description: ''
+    post:
+      operationId: pf_api_expenses_create
+      description: Create new instance of monthly expenses
+      tags:
+      - pf
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expenses'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Expenses'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Expenses'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expenses'
+          description: ''
+  /pf/api/expenses/{rowId}/:
+    get:
+      operationId: pf_api_expenses_retrieve
+      description: Retrieve details of a monthly expenses
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - pf
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expenses'
+          description: ''
+    put:
+      operationId: pf_api_expenses_update
+      description: Update details of a monthly expenses
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - pf
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expenses'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Expenses'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Expenses'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expenses'
+          description: ''
+    patch:
+      operationId: pf_api_expenses_partial_update
+      description: Partially update details of a monthly expenses
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - pf
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExpenses'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExpenses'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExpenses'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expenses'
+          description: ''
+    delete:
+      operationId: pf_api_expenses_destroy
+      description: Remove an instance of monthly expenses
+      parameters:
+      - in: path
+        name: rowId
+        schema:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        description: A unique value identifying this monthly summary.
+        required: true
+      tags:
+      - pf
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /pf/api/income/:
+    get:
+      operationId: pf_api_income_list
       description: Retrieve list of monthly income streams. Can filter/search/order
         response.
       parameters:
@@ -34,7 +219,7 @@ paths:
         schema:
           type: string
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -47,10 +232,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedIncomeList'
           description: ''
     post:
-      operationId: api_income_create
+      operationId: pf_api_income_create
       description: Create new instance of monthly income streams
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -73,9 +258,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Income'
           description: ''
-  /api/income/{rowId}/:
+  /pf/api/income/{rowId}/:
     get:
-      operationId: api_income_retrieve
+      operationId: pf_api_income_retrieve
       description: Retrieve details of a monthly income stream
       parameters:
       - in: path
@@ -87,7 +272,7 @@ paths:
         description: A unique value identifying this monthly summary.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -100,7 +285,7 @@ paths:
                 $ref: '#/components/schemas/Income'
           description: ''
     put:
-      operationId: api_income_update
+      operationId: pf_api_income_update
       description: Update details of a monthly income stream
       parameters:
       - in: path
@@ -112,7 +297,7 @@ paths:
         description: A unique value identifying this monthly summary.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -136,7 +321,7 @@ paths:
                 $ref: '#/components/schemas/Income'
           description: ''
     patch:
-      operationId: api_income_partial_update
+      operationId: pf_api_income_partial_update
       description: Partially update details of a monthly income stream
       parameters:
       - in: path
@@ -148,7 +333,7 @@ paths:
         description: A unique value identifying this monthly summary.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -171,7 +356,7 @@ paths:
                 $ref: '#/components/schemas/Income'
           description: ''
     delete:
-      operationId: api_income_destroy
+      operationId: pf_api_income_destroy
       description: Remove an instance of monthly streams
       parameters:
       - in: path
@@ -183,24 +368,25 @@ paths:
         description: A unique value identifying this monthly summary.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
       responses:
         '204':
           description: No response body
-  /api/positions/:
+  /pf/api/positions/:
     get:
-      operationId: api_positions_list
+      operationId: pf_api_positions_list
       description: Retrieve list of investment positions. Can filter/search/order
         response.
       parameters:
       - in: query
         name: date
         schema:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
       - in: query
         name: end_date
         schema:
@@ -242,9 +428,11 @@ paths:
       - in: query
         name: symbol
         schema:
-          type: string
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -257,10 +445,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedPositionsList'
           description: ''
     post:
-      operationId: api_positions_create
+      operationId: pf_api_positions_create
       description: Create new instance of a position
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -283,9 +471,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Positions'
           description: ''
-  /api/positions/{rowId}/:
+  /pf/api/positions/{rowId}/:
     get:
-      operationId: api_positions_retrieve
+      operationId: pf_api_positions_retrieve
       description: Retrieve details of a position
       parameters:
       - in: path
@@ -297,7 +485,7 @@ paths:
         description: A unique value identifying this positions.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -310,7 +498,7 @@ paths:
                 $ref: '#/components/schemas/Positions'
           description: ''
     put:
-      operationId: api_positions_update
+      operationId: pf_api_positions_update
       description: Update details of a position
       parameters:
       - in: path
@@ -322,7 +510,7 @@ paths:
         description: A unique value identifying this positions.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -346,7 +534,7 @@ paths:
                 $ref: '#/components/schemas/Positions'
           description: ''
     patch:
-      operationId: api_positions_partial_update
+      operationId: pf_api_positions_partial_update
       description: Partially update details of a position
       parameters:
       - in: path
@@ -358,7 +546,7 @@ paths:
         description: A unique value identifying this positions.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -381,7 +569,7 @@ paths:
                 $ref: '#/components/schemas/Positions'
           description: ''
     delete:
-      operationId: api_positions_destroy
+      operationId: pf_api_positions_destroy
       description: Remove an instance of a position
       parameters:
       - in: path
@@ -393,23 +581,24 @@ paths:
         description: A unique value identifying this positions.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
       responses:
         '204':
           description: No response body
-  /api/trades/:
+  /pf/api/trades/:
     get:
-      operationId: api_trades_list
+      operationId: pf_api_trades_list
       description: Retrieve list of investment trades. Can filter/search/order response.
       parameters:
       - in: query
         name: date
         schema:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
       - in: query
         name: end_date
         schema:
@@ -451,9 +640,11 @@ paths:
       - in: query
         name: symbol
         schema:
-          type: string
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -466,10 +657,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedTradesList'
           description: ''
     post:
-      operationId: api_trades_create
+      operationId: pf_api_trades_create
       description: Create new instance of a trade
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -492,9 +683,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Trades'
           description: ''
-  /api/trades/{rowId}/:
+  /pf/api/trades/{rowId}/:
     get:
-      operationId: api_trades_retrieve
+      operationId: pf_api_trades_retrieve
       description: Retrieve details of a trade
       parameters:
       - in: path
@@ -506,7 +697,7 @@ paths:
         description: A unique value identifying this trades.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -519,7 +710,7 @@ paths:
                 $ref: '#/components/schemas/Trades'
           description: ''
     put:
-      operationId: api_trades_update
+      operationId: pf_api_trades_update
       description: Update details of a trade
       parameters:
       - in: path
@@ -531,7 +722,7 @@ paths:
         description: A unique value identifying this trades.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -555,7 +746,7 @@ paths:
                 $ref: '#/components/schemas/Trades'
           description: ''
     patch:
-      operationId: api_trades_partial_update
+      operationId: pf_api_trades_partial_update
       description: Partially update details of a trade
       parameters:
       - in: path
@@ -567,7 +758,7 @@ paths:
         description: A unique value identifying this trades.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -590,7 +781,7 @@ paths:
                 $ref: '#/components/schemas/Trades'
           description: ''
     delete:
-      operationId: api_trades_destroy
+      operationId: pf_api_trades_destroy
       description: Remove an instance of a trade
       parameters:
       - in: path
@@ -602,16 +793,16 @@ paths:
         description: A unique value identifying this trades.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
       responses:
         '204':
           description: No response body
-  /api/transactions/:
+  /pf/api/transactions/:
     get:
-      operationId: api_transactions_list
+      operationId: pf_api_transactions_list
       description: Retrieve list of transactions (expenses). Can filter/search/order
         response.
       parameters:
@@ -667,7 +858,7 @@ paths:
           type: string
           format: date
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -680,10 +871,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedTransactionsList'
           description: ''
     post:
-      operationId: api_transactions_create
+      operationId: pf_api_transactions_create
       description: Create new instance of a transaction
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -706,9 +897,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Transactions'
           description: ''
-  /api/transactions/{rowId}/:
+  /pf/api/transactions/{rowId}/:
     get:
-      operationId: api_transactions_retrieve
+      operationId: pf_api_transactions_retrieve
       description: Retrieve details of a transaction
       parameters:
       - in: path
@@ -720,7 +911,7 @@ paths:
         description: A unique value identifying this transactions.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -733,7 +924,7 @@ paths:
                 $ref: '#/components/schemas/Transactions'
           description: ''
     put:
-      operationId: api_transactions_update
+      operationId: pf_api_transactions_update
       description: Update details of a transaction
       parameters:
       - in: path
@@ -745,7 +936,7 @@ paths:
         description: A unique value identifying this transactions.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -769,7 +960,7 @@ paths:
                 $ref: '#/components/schemas/Transactions'
           description: ''
     patch:
-      operationId: api_transactions_partial_update
+      operationId: pf_api_transactions_partial_update
       description: Partially update details of a transaction
       parameters:
       - in: path
@@ -781,7 +972,7 @@ paths:
         description: A unique value identifying this transactions.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -804,7 +995,7 @@ paths:
                 $ref: '#/components/schemas/Transactions'
           description: ''
     delete:
-      operationId: api_transactions_destroy
+      operationId: pf_api_transactions_destroy
       description: Remove an instance of a transaction
       parameters:
       - in: path
@@ -816,24 +1007,25 @@ paths:
         description: A unique value identifying this transactions.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
       responses:
         '204':
           description: No response body
-  /api/transfers/:
+  /pf/api/transfers/:
     get:
-      operationId: api_transfers_list
+      operationId: pf_api_transfers_list
       description: Retrieve list of account transfers (deposits and withrawals). Can
         filter/search/order response.
       parameters:
       - in: query
         name: date
         schema:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
       - in: query
         name: end_date
         schema:
@@ -873,7 +1065,7 @@ paths:
           type: string
           format: date
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -886,10 +1078,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedTransfersList'
           description: ''
     post:
-      operationId: api_transfers_create
+      operationId: pf_api_transfers_create
       description: Create new instance of a transfer
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -912,9 +1104,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Transfers'
           description: ''
-  /api/transfers/{rowId}/:
+  /pf/api/transfers/{rowId}/:
     get:
-      operationId: api_transfers_retrieve
+      operationId: pf_api_transfers_retrieve
       description: Retrieve details of a transfer
       parameters:
       - in: path
@@ -926,7 +1118,7 @@ paths:
         description: A unique value identifying this transfers.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -939,7 +1131,7 @@ paths:
                 $ref: '#/components/schemas/Transfers'
           description: ''
     put:
-      operationId: api_transfers_update
+      operationId: pf_api_transfers_update
       description: Update details of a transfer
       parameters:
       - in: path
@@ -951,7 +1143,7 @@ paths:
         description: A unique value identifying this transfers.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -975,7 +1167,7 @@ paths:
                 $ref: '#/components/schemas/Transfers'
           description: ''
     patch:
-      operationId: api_transfers_partial_update
+      operationId: pf_api_transfers_partial_update
       description: Partially update details of a transfer
       parameters:
       - in: path
@@ -987,7 +1179,7 @@ paths:
         description: A unique value identifying this transfers.
         required: true
       tags:
-      - api
+      - pf
       requestBody:
         content:
           application/json:
@@ -1010,7 +1202,7 @@ paths:
                 $ref: '#/components/schemas/Transfers'
           description: ''
     delete:
-      operationId: api_transfers_destroy
+      operationId: pf_api_transfers_destroy
       description: Remove an instance of a transfer
       parameters:
       - in: path
@@ -1022,7 +1214,7 @@ paths:
         description: A unique value identifying this transfers.
         required: true
       tags:
-      - api
+      - pf
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -1031,35 +1223,90 @@ paths:
           description: No response body
 components:
   schemas:
+    Expenses:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        eatingOut:
+          type: number
+          format: double
+          nullable: true
+        groceries:
+          type: number
+          format: double
+          nullable: true
+        restaurants:
+          type: number
+          format: double
+          nullable: true
+        personalItems:
+          type: number
+          format: double
+          nullable: true
+        extra:
+          type: number
+          format: double
+          nullable: true
+        transportation:
+          type: number
+          format: double
+          nullable: true
+        housing:
+          type: number
+          format: double
+          nullable: true
+        help:
+          type: number
+          format: double
+          nullable: true
+      required:
+      - date
     Income:
       type: object
       properties:
-        rowId:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
         date:
           type: string
           format: date
         income:
           type: number
-          format: float
+          format: double
           nullable: true
         cashback:
           type: number
-          format: float
+          format: double
           nullable: true
         interest:
           type: number
-          format: float
+          format: double
           nullable: true
         investment:
           type: number
-          format: float
+          format: double
           nullable: true
       required:
       - date
-      - rowId
+    PaginatedExpensesList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expenses'
     PaginatedIncomeList:
       type: object
       properties:
@@ -1160,58 +1407,111 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Transfers'
+    PatchedExpenses:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        eatingOut:
+          type: number
+          format: double
+          nullable: true
+        groceries:
+          type: number
+          format: double
+          nullable: true
+        restaurants:
+          type: number
+          format: double
+          nullable: true
+        personalItems:
+          type: number
+          format: double
+          nullable: true
+        extra:
+          type: number
+          format: double
+          nullable: true
+        transportation:
+          type: number
+          format: double
+          nullable: true
+        housing:
+          type: number
+          format: double
+          nullable: true
+        help:
+          type: number
+          format: double
+          nullable: true
     PatchedIncome:
       type: object
       properties:
-        rowId:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
         date:
           type: string
           format: date
         income:
           type: number
-          format: float
+          format: double
           nullable: true
         cashback:
           type: number
-          format: float
+          format: double
           nullable: true
         interest:
           type: number
-          format: float
+          format: double
           nullable: true
         investment:
           type: number
-          format: float
+          format: double
           nullable: true
     PatchedPositions:
       type: object
       properties:
         date:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        account:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         symbol:
-          type: string
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
         amount:
           type: number
-          format: float
+          format: double
     PatchedTrades:
       type: object
       properties:
         date:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        account:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         symbol:
-          type: string
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         quantity:
           type: integer
           maximum: 2147483647
           minimum: -2147483648
         amount:
           type: number
-          format: float
+          format: double
     PatchedTransactions:
       type: object
       properties:
@@ -1232,29 +1532,46 @@ components:
           type: string
         amount:
           type: number
-          format: float
+          format: double
     PatchedTransfers:
       type: object
       properties:
         date:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        account:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         amount:
           type: number
-          format: float
-          nullable: true
+          format: double
     Positions:
       type: object
       properties:
         date:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        account:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         symbol:
-          type: string
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
         amount:
           type: number
-          format: float
+          format: double
       required:
+      - account
       - amount
       - date
       - symbol
@@ -1262,18 +1579,26 @@ components:
       type: object
       properties:
         date:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        account:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         symbol:
-          type: string
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         quantity:
           type: integer
           maximum: 2147483647
           minimum: -2147483648
         amount:
           type: number
-          format: float
+          format: double
       required:
+      - account
       - amount
       - date
       - quantity
@@ -1298,7 +1623,7 @@ components:
           type: string
         amount:
           type: number
-          format: float
+          format: double
       required:
       - amount
       - category
@@ -1308,13 +1633,18 @@ components:
       type: object
       properties:
         date:
-          type: string
-          format: date
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        account:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
         amount:
           type: number
-          format: float
-          nullable: true
+          format: double
       required:
+      - account
       - date
   securitySchemes:
     basicAuth:
@@ -1323,4 +1653,4 @@ components:
     cookieAuth:
       type: apiKey
       in: cookie
-      name: Session
+      name: sessionid

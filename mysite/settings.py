@@ -100,11 +100,11 @@ DATABASES = {
     },
     'monthly_summary': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'api/dbs/monthly_summary.db'),
+        'NAME': os.path.join(BASE_DIR, 'media/api_dbs/monthly_summary.db'),
     },
-    'account_data': {
+    'questrade': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'api/dbs/account_data.db'),
+        'NAME': os.path.join(BASE_DIR, 'media/api_dbs/questrade.db'),
     },
 }
 

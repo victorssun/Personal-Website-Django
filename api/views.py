@@ -4,7 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet, Number
 from .models import MonthlySummary, Transactions
 from .models import Positions, Trades, Transfers
 
-from .serializers import IncomeSerializer, TransactionsSerializer
+from .serializers import IncomeSerializer, TransactionsSerializer, ExpensesSerializer
 from .serializers import PositionsSerializer, TradesSerializer, TransfersSerializer
 
 from drf_spectacular.utils import extend_schema
@@ -116,6 +116,40 @@ class IncomeSet(viewsets.ModelViewSet):
         return super().destroy(request)
 
 
+class ExpensesSet(viewsets.ModelViewSet):
+    queryset = MonthlySummary.objects.all()
+    serializer_class = ExpensesSerializer
+
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+    search_fields = ['date']
+    filterset_fields = ['date']
+    ordering_fields = ['date', 'eatingOut', 'groceries', 'restaurants', 'personalItems', 'extra', 'transportation', 'housing', 'help']
+
+    @extend_schema(description='Retrieve list of monthly expenses. Can filter/search/order response.', methods=["GET"])
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(description='Create new instance of monthly expenses', methods=["POST"])
+    def create(self, request):
+        return super().create(request)
+
+    @extend_schema(description='Retrieve details of a monthly expenses', methods=["GET"])
+    def retrieve(self, request):
+        return super().retrieve(request)
+
+    @extend_schema(description='Update details of a monthly expenses', methods=["PUT"])
+    def update(self, request):
+        return super().update(request)
+
+    @extend_schema(description='Partially update details of a monthly expenses', methods=["PATCH"])
+    def partial_update(self, request):
+        return super().partial_update(request)
+
+    @extend_schema(description='Remove an instance of monthly expenses', methods=["DELETE"])
+    def destroy(self, request):
+        return super().destroy(request)
+
+
 class TransactionsSet(viewsets.ModelViewSet):
     queryset = Transactions.objects.all()
     serializer_class = TransactionsSerializer
@@ -156,7 +190,7 @@ class PositionsSet(viewsets.ModelViewSet):
 
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
     search_fields = ['date', 'symbol']
-    ordering_fields = ['date', 'value']
+    ordering_fields = ['date', 'amount']
     filterset_class = PositionsSetFilter
 
     @extend_schema(description='Retrieve list of investment positions. Can filter/search/order response.', methods=["GET"])
@@ -190,7 +224,7 @@ class TradesSet(viewsets.ModelViewSet):
 
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
     search_fields = ['date', 'symbol']
-    ordering_fields = ['date', 'value']
+    ordering_fields = ['date', 'amount']
     filterset_class = TradesSetFilter
 
     @extend_schema(description='Retrieve list of investment trades. Can filter/search/order response.', methods=["GET"])

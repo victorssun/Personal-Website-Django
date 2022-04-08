@@ -37,6 +37,7 @@ api/transfers/
 
 router = routers.DefaultRouter()
 router.register(r'income', views.IncomeSet)
+router.register(r'expenses', views.ExpensesSet)
 router.register(r'transactions', views.TransactionsSet)
 router.register(r'positions', views.PositionsSet)
 router.register(r'trades', views.TradesSet)

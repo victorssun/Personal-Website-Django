@@ -7,4 +7,6 @@ venv
 .idea
 .git
 .env
-data/
+media/api_dbs/
+*.db
+staticfiles/

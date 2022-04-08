@@ -26,7 +26,7 @@ from dash.dependencies import Input, Output
 ############
 ### MAIN ###
 ############
-# direct_db = 'C:/Users/A/Documents/K/Projects/Interests Analysis/'
+# direct_db = 'C:/Users/A/Documents/K/Ongoing Projects/Website_heroku/mysite/'
 direct_db = ''
 filename_db = 'media/interests.db'
 
@@ -105,11 +105,13 @@ app.layout = html.Div([
         ),
 
         html.Div(dcc.Graph(id='book-graph',
-                           figure=px.bar(df_books, x='date finished', y=len(df_books)*[1],
-                                         hover_data=['title', 'author'],
+                           # figure=px.bar(pd.to_numeric(df_books['date finished'].str[0:4]).value_counts(), x='date finished', y='date finished',
+                           figure=px.bar(x=pd.to_numeric(df_books['date finished'].str[0:4]).value_counts().index, y=pd.to_numeric(df_books['date finished'].str[0:4]).value_counts().values,
+                                         # hover_data=['title', 'author'],
                                          title='Reading timeline',
-                                         labels={'y': ''}),
+                                         labels={'x': 'year', 'y': '# of books'},
                                          ),
+                           ),
         ),
     
     ], style={'width':'47%', 'float':'left', 'border-width':'2px', 'border-style':'dotted', 'border-color':'#7f7f7f', 'border-radius':'10px', 'padding':'10px'}),
@@ -175,7 +177,7 @@ def update_movie_graph(value):
     if value != 'director':
         df_select = df_movies[value+' 1']
         for column in [value+' 2', value+' 3', value+' 4']:
-            df_select = df_select.append(df_movies[column])
+            df_select = pd.concat([df_select, df_movies[column]])
     else:
         df_select = df_movies[value]
     # plot histogram

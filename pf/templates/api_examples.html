@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style_pf.css' %}">
+<title>Victor Sun | PF API Examples </title>
+
+<div id="content" class="overflow-auto" style="min-width:650px">
+	<center><h1>API Examples</h1>
+		<p>Get API requests with optional search field.</p></center><hr>
+	<div class="row">
+		<div class="col-12">
+            <h3>Input</h3>
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th>Data</th>
+					<th>Page</th>
+					<th>Search Field</th>
+					<th>Get</th>
+				</tr>
+				<tr>
+                    <td>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="radios" id="income_radio" value="income" checked>
+							<label class="form-check-label" for="income_radio">
+								Income
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="radios" id="transactions_radio" value="transactions">
+							<label class="form-check-label" for="transactions_radio">
+                                Transactions
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="radios" id="positions_radio" value="positions">
+							<label class="form-check-label" for="positions_radio">
+								Positions
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="radios" id="trades_radio" value="trades">
+							<label class="form-check-label" for="trades_radio">
+                                Trades
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="radios" id="transfer_radio" value="transfers">
+							<label class="form-check-label" for="transfer_radio">
+                                Transfers
+							</label>
+						</div>
+					</td>
+					<td><input id="page_num" name="pag_num" class="static_params" type="text" value="1"></td>
+					<td><input id="search" name="search" class="static_params" type="text"></td>
+					<td><button id="button" class="btn-sm btn-primary" onclick="get_request()">Get</button></td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h3>Output</h3>
+			<table id="output" class="table table-bordered table-striped"></table>
+		</div>
+	</div>
+</div>
+
+<script>$('#content').hide().fadeIn(1000*1.5);</script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="{% static 'api_examples.js' %}"></script>
+
+{% endblock %}

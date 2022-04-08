@@ -5,15 +5,11 @@ from . import models
 
 
 def pf_index(request):
-    context = {
-    }
-    return render(request, 'pf_index.html', context)
+    return render(request, 'pf_index.html')
 
 
 def pf_visualization(request):
-    context = {
-    }
-    return render(request, 'pf_visualization.html', context)
+    return render(request, 'pf_visualization.html')
 
 
 class Doc(TemplateView):
@@ -33,3 +29,7 @@ def food_prediction(request):
         'past_week': past_week
     }
     return render(request, 'food_predictor.html', context)
+
+
+def api_examples(request):
+    return render(request, 'api_examples.html')

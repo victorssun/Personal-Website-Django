@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from django.conf.urls.static import static, serve
-from django.conf.urls import url
+# from django.conf.urls import url
 from django.conf import settings
 
 from music import analyze_music  # !dash
@@ -32,7 +32,7 @@ urlpatterns = [
     path('books-and-movies/', include('books_movies.urls')),
     path('pf/', include('pf.urls')),
     path('pf/api/', include('api.urls')),
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     path('django_plotly_dash/', include('django_plotly_dash.urls')),  # !dash
 ]
 

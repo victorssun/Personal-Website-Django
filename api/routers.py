@@ -1,10 +1,16 @@
 
+class Database:
+    """ Name of sqlite database as shown in settings.py """
+    MonthlySummary = 'monthly_summary'
+    Questrade = 'questrade'
+
+
 def decide_on_model(model):
     """Small helper function to pipe all DB operations of a worlddata model to the world_data DB"""
-    if model._meta.app_label == 'monthly_summary':
-        return 'monthly_summary'
-    elif model._meta.app_label == 'account_data':
-        return 'account_data'
+    if model._meta.app_label == Database.MonthlySummary:
+        return Database.MonthlySummary
+    elif model._meta.app_label == Database.Questrade:
+        return Database.Questrade
     else:
         return None
 
@@ -15,7 +21,6 @@ class ApiRouter:
 
     - Django related db goes to 'default'
     - Legacy monthly_summary db goes to 'monthly_summary'
-    - Legancy account_data db goes to 'account_data'
     """
     def db_for_read(self, model, **hints):
         return decide_on_model(model)
@@ -34,15 +39,15 @@ class ApiRouter:
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
         # allow migrations on the "default" (django related data) DB
-        if db == 'default' and (app_label != 'monthly_summary' or app_label != 'account_data'):
+        if db == 'default' and (app_label != Database.MonthlySummary or app_label != Database.Questrade):
             return True
 
         # allow migrations on the legacy database too:
         # this will enable to actually alter the database schema of the legacy DB!
-        if db == 'monthly_summary' and app_label == "monthly_summary":
+        if db == Database.MonthlySummary and app_label == Database.MonthlySummary:
            return True
 
-        if db == 'account_data' and app_label == "account_data":
+        if db == Database.Questrade and app_label == Database.Questrade:
             return True
 
         return False
